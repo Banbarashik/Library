@@ -3,27 +3,26 @@ let myLibrary = [];
 const cardsBlock = document.querySelector(".cards");
 const addBookBtn = document.getElementById("add-book");
 
-function Book(title, author, pages) {
+function Book(title, author, pages, readStatus) {
   this.title = title;
   this.author = author;
   this.pages = pages;
+  this.read = readStatus;
 }
 
 function addBookToLibrary() {
-  // myLibrary = [];
   cardsBlock.replaceChildren();
 
   const title = document.getElementById("title").value;
   const author = document.getElementById("author").value;
   const pages = document.getElementById("pages").value;
+  const readStatus = document.getElementById("status").checked;
 
-  const newBook = new Book(title, author, pages);
+  const newBook = new Book(title, author, pages, readStatus);
 
   myLibrary.push(newBook);
 
   myLibrary.forEach((book, index) => {
-    const formCheckbox = document.getElementById("status");
-
     const bookCardBody = document.createElement("article");
     const title = document.createElement("h2");
     const author = document.createElement("p");
@@ -38,7 +37,7 @@ function addBookToLibrary() {
     statusLabel.setAttribute("for", "read" + index);
     removeBtn.setAttribute("data-index", index);
 
-    if (formCheckbox.checked === true) statusInput.checked = true;
+    statusInput.checked = book.read;
 
     bookCardBody.classList.add("book-card");
     title.classList.add("title");
@@ -66,12 +65,12 @@ function addBookToLibrary() {
     bookCardBody.setAttribute("data-index", index);
     cardsBlock.appendChild(bookCardBody);
 
-    removeBtn.addEventListener("click", () => {
+    removeBtn.addEventListener("click", (e) => {
       myLibrary.splice(bookCardBody.dataset.index, 1);
-      const test = document.querySelector(
+      const currentCard = document.querySelector(
         `article[data-index="${bookCardBody.dataset.index}"]`
       );
-      cardsBlock.removeChild(test);
+      cardsBlock.removeChild(currentCard);
     });
   });
 }
