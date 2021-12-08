@@ -1,6 +1,7 @@
 "use strict";
 let myLibrary = [];
 const cardsBlock = document.querySelector(".cards");
+const addBookBtn = document.getElementById("add-book");
 
 function Book(title, author, pages) {
   this.title = title;
@@ -9,51 +10,73 @@ function Book(title, author, pages) {
 }
 
 function addBookToLibrary() {
-  myLibrary = [];
+  // myLibrary = [];
+  cardsBlock.replaceChildren();
+
   const title = document.getElementById("title").value;
   const author = document.getElementById("author").value;
   const pages = document.getElementById("pages").value;
 
   const newBook = new Book(title, author, pages);
+
   myLibrary.push(newBook);
 
   myLibrary.forEach((book, index) => {
+    const formCheckbox = document.getElementById("status");
+
     const bookCardBody = document.createElement("article");
     const title = document.createElement("h2");
     const author = document.createElement("p");
     const pages = document.createElement("p");
-    const formCheckbox = document.getElementById("status");
     const inputLabelContainer = document.createElement("div");
-    inputLabelContainer.classList.add("input-and-label");
     const statusInput = document.createElement("input");
     const statusLabel = document.createElement("label");
+    const removeBtn = document.createElement("button");
+
     statusInput.setAttribute("type", "checkbox");
     statusInput.setAttribute("id", "read" + index);
     statusLabel.setAttribute("for", "read" + index);
-    statusLabel.textContent = "Read";
+    removeBtn.setAttribute("data-index", index);
+
     if (formCheckbox.checked === true) statusInput.checked = true;
+
     bookCardBody.classList.add("book-card");
     title.classList.add("title");
     author.classList.add("author");
     pages.classList.add("pages");
+    inputLabelContainer.classList.add("input-and-label");
+    removeBtn.classList.add("remove-btn");
+
     title.textContent = book.title;
     author.textContent = book.author;
     pages.textContent = book.pages;
+    statusLabel.textContent = "Read";
+    removeBtn.textContent = "Remove the book";
+
     bookCardBody.appendChild(title);
     bookCardBody.appendChild(author);
     bookCardBody.appendChild(pages);
+
     inputLabelContainer.appendChild(statusInput);
     inputLabelContainer.appendChild(statusLabel);
     bookCardBody.appendChild(inputLabelContainer);
+
+    bookCardBody.appendChild(removeBtn);
+
+    bookCardBody.setAttribute("data-index", index);
     cardsBlock.appendChild(bookCardBody);
+
+    removeBtn.addEventListener("click", () => {
+      myLibrary.splice(bookCardBody.dataset.index, 1);
+      const test = document.querySelector(
+        `article[data-index="${bookCardBody.dataset.index}"]`
+      );
+      cardsBlock.removeChild(test);
+    });
   });
 }
-
-const addBookBtn = document.getElementById("add-book");
 
 addBookBtn.addEventListener("click", (e) => {
   e.preventDefault();
   addBookToLibrary();
 });
-
-console.log(myLibrary);
