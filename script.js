@@ -1,5 +1,6 @@
 "use strict";
 let myLibrary = [];
+const cardsBlock = document.querySelector(".cards");
 
 function Book(title, author, pages) {
   this.title = title;
@@ -31,7 +32,7 @@ function addBookToLibrary() {
     bookCardBody.appendChild(title);
     bookCardBody.appendChild(author);
     bookCardBody.appendChild(pages);
-    document.body.appendChild(bookCardBody);
+    cardsBlock.appendChild(bookCardBody);
   });
 }
 
