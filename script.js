@@ -69,20 +69,21 @@ function goThroughArray() {
     bookCardBody.setAttribute("data-index", index);
     cardsBlock.appendChild(bookCardBody);
 
-    removeBtn.addEventListener("click", (e) => {
-      myLibrary.splice(bookCardBody.dataset.index, 1);
-      const currentCard = document.querySelector(
-        `article[data-index="${bookCardBody.dataset.index}"]`
-      );
-      cardsBlock.removeChild(currentCard);
-    });
-
     statusInput.addEventListener("click", () => {
       if (document.querySelector(`#read${index}`).checked) {
         myLibrary[index].read = true;
       } else {
         myLibrary[index].read = false;
       }
+    });
+
+    removeBtn.addEventListener("click", (e) => {
+      const currentCard = document.querySelector(
+        `article[data-index="${bookCardBody.dataset.index}"]`
+      );
+      cardsBlock.removeChild(currentCard);
+      myLibrary.splice(bookCardBody.dataset.index, 1);
+      test();
     });
   });
 }
@@ -91,3 +92,10 @@ addBookBtn.addEventListener("click", (e) => {
   e.preventDefault();
   addBookToLibrary();
 });
+
+function test() {
+  const cards = document.querySelectorAll(".book-card");
+  cards.forEach((card, index) => {
+    card.setAttribute("data-index", index);
+  });
+}
