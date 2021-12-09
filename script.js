@@ -76,6 +76,8 @@ function addBookToLibrary() {
     statusInput.addEventListener("click", () => {
       if (document.querySelector(`#read${index}`).checked) {
         myLibrary[index].read = true;
+      } else {
+        myLibrary[index].read = false;
       }
     });
   });
