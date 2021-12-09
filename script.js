@@ -72,6 +72,12 @@ function addBookToLibrary() {
       );
       cardsBlock.removeChild(currentCard);
     });
+
+    statusInput.addEventListener("click", () => {
+      if (document.querySelector(`#read${index}`).checked) {
+        myLibrary[index].read = true;
+      }
+    });
   });
 }
 
