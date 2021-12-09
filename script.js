@@ -22,6 +22,10 @@ function addBookToLibrary() {
 
   myLibrary.push(newBook);
 
+  goThroughArray();
+}
+
+function goThroughArray() {
   myLibrary.forEach((book, index) => {
     const bookCardBody = document.createElement("article");
     const title = document.createElement("h2");
