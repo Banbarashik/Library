@@ -1,9 +1,9 @@
 // insert goThoughArray() inside .forEach
 "use strict";
 let myLibrary = [[]];
-const cardsBlock = document.querySelector(".cards");
+// const cardsBlock = document.querySelector(".cards");
+let cardsBlock = document.querySelector(".cards");
 const addBookBtn = document.getElementById("add-book");
-// let isFull;
 
 function Book(title, author, pages, readStatus) {
   this.title = title;
@@ -13,8 +13,6 @@ function Book(title, author, pages, readStatus) {
 }
 
 function addBookToLibrary() {
-  // cardsBlock.replaceChildren();
-
   const title = document.getElementById("title").value;
   const author = document.getElementById("author").value;
   const pages = document.getElementById("pages").value;
@@ -22,33 +20,12 @@ function addBookToLibrary() {
 
   const newBook = new Book(title, author, pages, readStatus);
 
-  // myLibrary.forEach((shelf, index) => {
-  // if (shelf[index].length < 7) {
-  //  shelf[index].push(newBook);
-  // } else {
-  // create a new shelf
-  // myLibrary.push([]);
-  // create a new container
-  // const cardsBlock = document.createElement('section');
-  // cardsBlock.classList.add("cards");
-  // document.body.appendChild(cardsBlock);
-  // }
-  //})
-
-  // nested array
-  // first layer for myLibrary
-  // second for shelfs
-  // for (let i = 0; i < myLibrary.length; i++) {
-  //  for (let j = 0; j <= 8; j++) {
-
-  // }
-  // }
-
-  // isFull = true
-  // if isFull is true - don't execute
   myLibrary.forEach((shelf, index) => {
     if (shelf.length >= 8 && myLibrary.length === index + 1) {
       myLibrary.push([]);
+      cardsBlock = document.createElement("section");
+      cardsBlock.classList.add("cards");
+      document.body.appendChild(cardsBlock);
     } else if (shelf.length >= 8) {
       return;
     } else {
@@ -57,14 +34,13 @@ function addBookToLibrary() {
     }
   });
 }
-// if shelf.index > 8 {return}
-// shelf.push()
-// f checkIfArrayIsFull(shelf)
-// {if {shelf > 8} {return}}
-// if myLibrary.length === shelf.index - only in this case create a new array
+
 function goThroughArray() {
-  cardsBlock.replaceChildren();
   for (let i = 0; i < myLibrary.length; i++) {
+    cardsBlock.replaceChildren();
+    // const cardsBlock = document.createElement("section");
+    // cardsBlock.classList.add(".cards");
+    // document.body.appendChild(cardsBlock);
     for (let j = 0; j < myLibrary[i].length; j++) {
       const bookCardBody = document.createElement("article");
       const title = document.createElement("h2");
