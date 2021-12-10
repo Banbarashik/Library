@@ -9,7 +9,32 @@
     <title>Library app</title>
   </head>
   <body>
-    <section class="cards"></section>
+    <section class="cards">
+      <article class="book-card" data-index="0">
+        <h2 class="title">The Hobbit</h2>
+        <div class="author-and-pages-block">
+          <p class="author">Tolkien</p>
+          <p class="pages">3000 pages</p>
+        </div>
+        <div class="input-and-label book-read-status">
+          <input type="checkbox" id="read1" />
+          <label for="read1">Read</label>
+        </div>
+        <button data-index="1" class="remove-btn">Remove the book</button>
+      </article>
+      <article class="book-card" data-index="0">
+        <h2 class="title">Harry Potter and the Philosopher's Stone</h2>
+        <div class="author-and-pages-block">
+          <p class="author">J. K. Rowling</p>
+          <p class="pages">3000 pages</p>
+        </div>
+        <div class="input-and-label book-read-status">
+          <input type="checkbox" id="read1" />
+          <label for="read1">Read</label>
+        </div>
+        <button data-index="1" class="remove-btn">Remove the book</button>
+      </article>
+    </section>
     <form class="add-book-form">
       <div class="input-and-label">
         <label for="title">Title</label>
