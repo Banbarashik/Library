@@ -1,7 +1,6 @@
 // insert goThoughArray() inside .forEach
 "use strict";
 let myLibrary = [[]];
-// const cardsBlock = document.querySelector(".cards");
 let cardsBlock = document.querySelector(".cards");
 const addBookBtn = document.getElementById("add-book");
 
@@ -38,9 +37,6 @@ function addBookToLibrary() {
 function goThroughArray() {
   for (let i = 0; i < myLibrary.length; i++) {
     cardsBlock.replaceChildren();
-    // const cardsBlock = document.createElement("section");
-    // cardsBlock.classList.add(".cards");
-    // document.body.appendChild(cardsBlock);
     for (let j = 0; j < myLibrary[i].length; j++) {
       const bookCardBody = document.createElement("article");
       const title = document.createElement("h2");
@@ -55,6 +51,10 @@ function goThroughArray() {
       // statusInput.setAttribute("id", "read" + index);
       // statusLabel.setAttribute("for", "read" + index);
       // removeBtn.setAttribute("data-index", index);
+      statusInput.setAttribute("type", "checkbox");
+      statusInput.setAttribute("id", "read" + j);
+      statusLabel.setAttribute("for", "read" + j);
+      removeBtn.setAttribute("data-index", j);
 
       statusInput.checked = myLibrary[i][j].read;
 
@@ -82,14 +82,8 @@ function goThroughArray() {
       bookCardBody.appendChild(removeBtn);
 
       // bookCardBody.setAttribute("data-index", index);
-      // if (document.querySelectorAll(".book-card").length > 7) {
-      //   const newCardsBlock = document.createElement("section");
-      //   newCardsBlock.classList.add("cards");
-      //   document.body.appendChild(newCardsBlock);
-      //   newCardsBlock.appendChild(bookCardBody);
-      // } else {
+      bookCardBody.setAttribute("data-index", j);
       cardsBlock.appendChild(bookCardBody);
-      // }
       // statusInput.addEventListener("click", () => {
       //   if (document.querySelector(`#read${index}`).checked) {
       //     myLibrary[index].read = true;
@@ -97,19 +91,13 @@ function goThroughArray() {
       //     myLibrary[index].read = false;
       //   }
       // });
-
-      // myLibrary.forEach((shelf, index) => {
-      // if (shelf[index].length < 7) {
-      //  shelf[index].push(newBook);
-      // } else {
-      // create a new shelf
-      // myLibrary.push([]);
-      // create a new container
-      // const cardsBlock = document.createElement('section');
-      // cardsBlock.classList.add("cards");
-      // document.body.appendChild(cardsBlock);
-      // }
-      //})
+      statusInput.addEventListener("click", () => {
+        if (document.querySelector(`#read${j}`).checked) {
+          myLibrary[j].read = true;
+        } else {
+          myLibrary[j].read = false;
+        }
+      });
 
       // removeBtn.addEventListener("click", (e) => {
       //   const currentCard = document.querySelector(
@@ -119,6 +107,14 @@ function goThroughArray() {
       //   myLibrary.splice(bookCardBody.dataset.index, 1);
       //   test();
       // });
+      removeBtn.addEventListener("click", (e) => {
+        const currentCard = document.querySelector(
+          `article[data-index="${bookCardBody.dataset.index}"]`
+        );
+        cardsBlock.removeChild(currentCard);
+        myLibrary[i].splice(bookCardBody.dataset.index, 1);
+        test();
+      });
     }
   }
 }

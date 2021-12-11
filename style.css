@@ -17,8 +17,6 @@ html {
 }
 
 body {
-  display: grid;
-  grid-template-columns: 1fr 30rem;
   font-family: sans-serif;
   font-size: 1.6rem;
 }
@@ -62,10 +60,10 @@ body {
   text-transform: uppercase;
 }
 
-.book-read-status,
+/* .book-read-status,
 .remove-btn {
   display: none;
-}
+} */
 
 .add-book-form {
   display: flex;
