@@ -5,10 +5,11 @@ let cardsBlock = document.querySelector(".cards");
 const addBookBtn = document.getElementById("add-book");
 const bookshelf = document.getElementById("bookshelf");
 
-function Book(title, author, pages) {
+function Book(title, author, totalPages, completedPages) {
   this.title = title;
   this.author = author;
-  this.pages = pages;
+  this.totalPages = totalPages;
+  this.completedPages = completedPages;
 }
 
 Book.prototype.addIndex = function () {
@@ -18,9 +19,10 @@ Book.prototype.addIndex = function () {
 function addBookToLibrary() {
   const title = document.getElementById("title").value;
   const author = document.getElementById("author").value;
-  const pages = document.getElementById("pages").value;
+  const totalPages = document.getElementById("totalPages").value;
+  const completedPages = document.getElementById("completedPages").value;
 
-  const newBook = new Book(title, author, pages);
+  const newBook = new Book(title, author, totalPages, completedPages);
   newBook.addIndex();
 
   myLibrary.push(newBook);
@@ -46,9 +48,21 @@ function addBookToPage(container, book) {
   bookAuthor.classList.add("author");
   bookAuthor.textContent = book.author;
 
-  const bookPages = document.createElement("p");
-  bookPages.classList.add("pages");
-  bookPages.textContent = book.pages;
+  const bookTotalPages = document.createElement("p");
+  bookTotalPages.classList.add("totalPages");
+  bookTotalPages.textContent = book.totalPages;
+
+  const bookCompletedPages = document.createElement("input");
+  bookCompletedPages.classList.add("completedPages");
+  bookCompletedPages.value = book.completedPages;
+  bookCompletedPages.setAttribute("type", "text");
+  bookCompletedPages.setAttribute(
+    "maxlength",
+    bookTotalPages.textContent.length
+  );
+  setInputFilter(bookCompletedPages, function (value) {
+    return /^\d*?\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+  });
 
   const deleteBtn = document.createElement("button");
   deleteBtn.classList.add("delete-btn");
@@ -56,7 +70,8 @@ function addBookToPage(container, book) {
 
   bookBody.appendChild(bookTitle);
   bookBody.appendChild(bookAuthor);
-  bookBody.appendChild(bookPages);
+  bookBody.appendChild(bookTotalPages);
+  bookBody.appendChild(bookCompletedPages);
   bookBody.appendChild(deleteBtn);
 
   container.appendChild(bookBody);
@@ -72,6 +87,37 @@ function addBookToPage(container, book) {
       cardsBlock.remove();
       cardsBlock = bookshelf.lastElementChild;
     }
+  });
+
+  bookCompletedPages.addEventListener("blur", (e) => {
+    const max = bookTotalPages.textContent;
+    if (parseInt(e.target.value) > max) e.target.value = max;
+  });
+}
+
+function setInputFilter(textbox, inputFilter) {
+  [
+    "input",
+    "keydown",
+    "keyup",
+    "mousedown",
+    "mouseup",
+    "select",
+    "contextmenu",
+    "drop",
+  ].forEach(function (event) {
+    textbox.addEventListener(event, function () {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      } else {
+        this.value = "";
+      }
+    });
   });
 }
 
