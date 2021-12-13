@@ -65,7 +65,10 @@ function addBookToPage(container, book) {
     bookBody.remove();
     delete myLibrary[book.index];
 
-    if (cardsBlock.childElementCount === 0) {
+    if (
+      cardsBlock.childElementCount === 0 &&
+      bookshelf.getElementsByClassName("cards").length !== 1
+    ) {
       cardsBlock.remove();
       cardsBlock = bookshelf.lastElementChild;
     }
