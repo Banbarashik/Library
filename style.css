@@ -60,11 +60,6 @@ body {
   text-transform: uppercase;
 }
 
-/* .book-read-status,
-.remove-btn {
-  display: none;
-} */
-
 .add-book-form {
   display: flex;
   gap: 1.5rem;
