@@ -32,7 +32,7 @@ function addBookToLibrary() {
 
   if (cardsBlock.childElementCount === 8) {
     cardsBlock = document.createElement("section");
-    cardsBlock.classList.add("cards");
+    cardsBlock.classList.add("cards", "cards-sequence");
     bookshelf.appendChild(cardsBlock);
   }
   addBookToPage(cardsBlock, newBook);

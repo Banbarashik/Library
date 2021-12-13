@@ -32,6 +32,10 @@ body {
   background-color: var(--shelf-inner-color);
 }
 
+.cards-sequence {
+  border-top: none;
+  height: calc((var(--book-height) * 4.7) + var(--border-shelf-size));
+}
 .book-card {
   display: flex;
   align-items: center;
