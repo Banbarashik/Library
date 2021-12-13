@@ -3,6 +3,7 @@
 let myLibrary = [];
 let cardsBlock = document.querySelector(".cards");
 const addBookBtn = document.getElementById("add-book");
+const bookshelf = document.getElementById("bookshelf");
 
 function Book(title, author, pages) {
   this.title = title;
@@ -21,14 +22,13 @@ function addBookToLibrary() {
 
   const newBook = new Book(title, author, pages);
   newBook.addIndex();
-  console.log(newBook);
 
   myLibrary.push(newBook);
 
   if (cardsBlock.childElementCount === 8) {
     cardsBlock = document.createElement("section");
     cardsBlock.classList.add("cards");
-    document.body.appendChild(cardsBlock);
+    bookshelf.appendChild(cardsBlock);
   }
   addBookToPage(cardsBlock, newBook);
 }
@@ -60,11 +60,15 @@ function addBookToPage(container, book) {
   bookBody.appendChild(deleteBtn);
 
   container.appendChild(bookBody);
-  console.log(bookBody);
 
   deleteBtn.addEventListener("click", () => {
     bookBody.remove();
     delete myLibrary[book.index];
+
+    if (cardsBlock.childElementCount === 0) {
+      cardsBlock.remove();
+      cardsBlock = bookshelf.lastElementChild;
+    }
   });
 }
 
