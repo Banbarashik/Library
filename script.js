@@ -1,9 +1,12 @@
-// insert goThoughArray() inside .forEach
 "use strict";
 let myLibrary = [];
 let cardsBlock = document.querySelector(".cards");
 const addBookBtn = document.getElementById("add-book");
 const bookshelf = document.getElementById("bookshelf");
+const title = document.getElementById("title");
+const author = document.getElementById("author");
+const totalPages = document.getElementById("totalPages");
+const completedPages = document.getElementById("completedPages");
 
 function Book(title, author, totalPages, completedPages) {
   this.title = title;
@@ -60,6 +63,7 @@ function addBookToPage(container, book) {
     "maxlength",
     bookTotalPages.textContent.length
   );
+
   setInputFilter(bookCompletedPages, function (value) {
     return /^\d*?\d*$/.test(value); // Allow digits and '.' only, using a RegExp
   });
@@ -123,5 +127,13 @@ function setInputFilter(textbox, inputFilter) {
 
 addBookBtn.addEventListener("click", (e) => {
   e.preventDefault();
+
+  if (parseInt(completedPages.value) > parseInt(totalPages.value))
+    completedPages.value = totalPages.value;
   addBookToLibrary();
+
+  title.value = "";
+  author.value = "";
+  totalPages.value = "";
+  completedPages.value = "";
 });
