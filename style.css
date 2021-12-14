@@ -28,14 +28,15 @@ body {
   row-gap: 0.1rem;
   width: calc(
     var(--book-width) * 2 + (var(--border-shelf-size) * 2) +
-      (var(--padding-and-col-gap) * 3)
+      (var(--padding-and-col-gap) * 2) + 4rem
   );
   height: calc((var(--book-height) * 4.7) + (var(--border-shelf-size) * 2));
   padding: 3rem;
   border: var(--border-shelf-size) solid var(--border-shelf-color);
   background-color: var(--shelf-inner-color);
-  column-gap: 3rem;
+  column-gap: 4rem;
   padding-bottom: 0.3rem;
+  padding-left: 2rem;
 }
 
 .cards-sequence {
@@ -103,12 +104,15 @@ body {
   bottom: 15%;
   z-index: 1;
   padding-left: 1rem;
-  border-width: 25px 10px 25px 70px;
+  border-width: 25px 10px 25px 10px;
   border-color: green;
   border-style: solid;
   border-right-color: transparent;
   display: flex;
   align-items: center;
+  color: transparent;
+  transition: border-left-width 0.3s, color;
+  transition-delay: 0s, 0.03s;
 }
 .completed-pages {
   width: 4.2rem;
@@ -120,6 +124,7 @@ body {
   transform: translateY(-50%);
   font-size: 1.5rem;
   outline: none;
+  color: inherit;
 }
 .completed-pages-wrapper::before {
   content: "p.";
@@ -127,6 +132,13 @@ body {
   left: -5.8rem;
 }
 
-/* #error-message {
-  display: none;
-} */
+.book-card:hover .completed-pages-wrapper {
+  border-left-width: 70px;
+  color: #000;
+  transition-delay: 0s, 0.14s;
+}
+
+.completed-pages-wrapper:focus-within {
+  border-left-width: 70px;
+  color: #000;
+}
