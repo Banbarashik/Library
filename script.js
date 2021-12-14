@@ -3,10 +3,12 @@ let myLibrary = [];
 let cardsBlock = document.querySelector(".cards");
 const addBookBtn = document.getElementById("add-book");
 const bookshelf = document.getElementById("bookshelf");
+const bookForm = document.getElementById("book-form");
 const title = document.getElementById("title");
 const author = document.getElementById("author");
 const totalPages = document.getElementById("totalPages");
 const completedPages = document.getElementById("completedPages");
+const errMessage = document.getElementById("error-message");
 
 function Book(title, author, totalPages, completedPages) {
   this.title = title;
@@ -47,22 +49,30 @@ function addBookToPage(container, book) {
   bookTitle.classList.add("title");
   bookTitle.textContent = book.title;
 
+  const bookAuthorPagesBlock = document.createElement("div");
+  bookAuthorPagesBlock.classList.add("author-and-pages");
+
   const bookAuthor = document.createElement("p");
   bookAuthor.classList.add("author");
   bookAuthor.textContent = book.author;
 
   const bookTotalPages = document.createElement("p");
   bookTotalPages.classList.add("totalPages");
-  bookTotalPages.textContent = book.totalPages;
+  bookTotalPages.textContent = book.totalPages + " pages";
+
+  bookAuthorPagesBlock.appendChild(bookAuthor);
+  bookAuthorPagesBlock.appendChild(bookTotalPages);
+
+  const completedPagesBlock = document.createElement("div");
+  completedPagesBlock.classList.add("completed-pages-wrapper");
 
   const bookCompletedPages = document.createElement("input");
-  bookCompletedPages.classList.add("completedPages");
+  bookCompletedPages.classList.add("completed-pages");
   bookCompletedPages.value = book.completedPages;
   bookCompletedPages.setAttribute("type", "text");
-  bookCompletedPages.setAttribute(
-    "maxlength",
-    bookTotalPages.textContent.length
-  );
+  bookCompletedPages.setAttribute("maxlength", String(book.totalPages).length);
+
+  completedPagesBlock.appendChild(bookCompletedPages);
 
   setInputFilter(bookCompletedPages, function (value) {
     return /^\d*?\d*$/.test(value); // Allow digits and '.' only, using a RegExp
@@ -73,9 +83,8 @@ function addBookToPage(container, book) {
   deleteBtn.textContent = "Remove the book";
 
   bookBody.appendChild(bookTitle);
-  bookBody.appendChild(bookAuthor);
-  bookBody.appendChild(bookTotalPages);
-  bookBody.appendChild(bookCompletedPages);
+  bookBody.appendChild(bookAuthorPagesBlock);
+  bookBody.appendChild(completedPagesBlock);
   bookBody.appendChild(deleteBtn);
 
   container.appendChild(bookBody);
@@ -94,8 +103,9 @@ function addBookToPage(container, book) {
   });
 
   bookCompletedPages.addEventListener("blur", (e) => {
-    const max = bookTotalPages.textContent;
+    const max = book.totalPages;
     if (parseInt(e.target.value) > max) e.target.value = max;
+    if (parseInt(e.target.value) === 0) e.target.value = 1;
   });
 }
 
@@ -130,7 +140,21 @@ addBookBtn.addEventListener("click", (e) => {
 
   if (parseInt(completedPages.value) > parseInt(totalPages.value))
     completedPages.value = totalPages.value;
+
+  if (parseInt(completedPages.value) === 0 || completedPages.value === "")
+    completedPages.value = 1;
+
+  if (title.value === "" || author.value === "" || totalPages.value === "") {
+    errMessage.textContent = "Please, fill out all required fields";
+    return false;
+  } else if (totalPages.value > totalPages.max) {
+    errMessage.textContent = "Number of pages can't be greater than 99999";
+    return false;
+  }
+
   addBookToLibrary();
+
+  errMessage.textContent = "";
 
   title.value = "";
   author.value = "";

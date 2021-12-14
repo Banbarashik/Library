@@ -9,24 +9,25 @@
     <title>Library app</title>
   </head>
   <body>
-    <form class="add-book-form">
+    <form id="book-form">
       <div class="input-and-label">
-        <label for="title">Title</label>
+        <label for="title">Title*</label>
         <input type="text" name="title" id="title" />
       </div>
       <div class="input-and-label">
-        <label for="author">Author</label>
+        <label for="author">Author*</label>
         <input type="text" name="author" id="author" />
       </div>
       <div class="input-and-label">
-        <label for="totalPages">Total pages</label>
-        <input type="number" name="totalPages" id="totalPages" />
+        <label for="totalPages">Total pages*</label>
+        <input type="number" name="totalPages" id="totalPages" max="99999" />
       </div>
       <div class="input-and-label">
         <label for="completedPages">Completed pages</label>
         <input type="number" name="completedPages" id="completedPages" />
       </div>
       <input type="submit" value="Add a new book" id="add-book" />
+      <p id="error-message"></p>
     </form>
     <main id="bookshelf">
       <section class="cards"></section>
