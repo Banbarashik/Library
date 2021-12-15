@@ -87,7 +87,6 @@ function addBookToPage(container, book) {
 
   const deleteBtn = document.createElement("button");
   deleteBtn.classList.add("delete-btn");
-  deleteBtn.textContent = "Remove the book";
 
   bookBody.appendChild(bookTitle);
   bookBody.appendChild(bookAuthorPagesBlock);
@@ -112,7 +111,8 @@ function addBookToPage(container, book) {
   bookCompletedPages.addEventListener("blur", (e) => {
     const max = book.totalPages;
     if (parseInt(e.target.value) > max) e.target.value = max;
-    if (parseInt(e.target.value) === 0) e.target.value = 1;
+    if (parseInt(e.target.value) === 0 || e.target.value === "")
+      e.target.value = 1;
   });
 }
 
