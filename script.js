@@ -10,6 +10,10 @@ const totalPages = document.getElementById("totalPages");
 const completedPages = document.getElementById("completedPages");
 const errMessage = document.getElementById("error-message");
 
+function getRandomNumber(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
 function Book(title, author, totalPages, completedPages) {
   this.title = title;
   this.author = author;
@@ -44,6 +48,9 @@ function addBookToPage(container, book) {
   const bookBody = document.createElement("article");
   bookBody.classList.add("book-card");
   bookBody.setAttribute("data-index", book.index);
+  bookBody.style.backgroundColor = `hsl(${getRandomNumber(0, 360)},
+  ${getRandomNumber(20, 100)}%,
+  ${getRandomNumber(50, 80)}%)`;
 
   const bookTitle = document.createElement("h2");
   bookTitle.classList.add("title");
