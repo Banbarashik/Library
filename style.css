@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap");
+
 :root {
   --book-width: 60rem;
   --book-height: 10rem;
@@ -20,8 +22,25 @@ html {
 body {
   display: grid;
   grid-template-columns: 1fr 30rem;
-  font-family: sans-serif;
+  font-family: "Montserrat Alternates", sans-serif;
   font-size: 1.6rem;
+  background-color: #723f3b6e;
+}
+
+input {
+  font: inherit;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 .cards {
@@ -82,7 +101,8 @@ body {
   width: 30rem;
   height: 100vh;
   padding: 3rem 3rem 0;
-  background-color: palegoldenrod;
+  background-color: hsl(7.9, 22.9%, 49%);
+  color: hsl(0, 38.5%, 87.3%);
 }
 
 .author-and-pages {
@@ -142,7 +162,7 @@ body {
 
 .book-card:hover {
   background: linear-gradient(to top right, transparent 50%, red 52%) top
-    right/5rem 4rem no-repeat;
+    right/4.5rem 4rem no-repeat;
 }
 
 .book-card:hover .delete-btn {
@@ -181,4 +201,40 @@ body {
   right: 10px;
   transform: rotate(-45deg);
   border-radius: 10px;
+}
+
+.input-and-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+#add-book {
+  width: 60%;
+  align-self: end;
+  margin-top: 1.2rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+}
+#add-book:hover {
+  opacity: 0.8;
+}
+#add-book:active {
+  opacity: 0.6;
+}
+#book-form input {
+  border-radius: 10px;
+  border: none;
+  height: 3rem;
+  background-color: #ebd2d2;
+  color: #673027;
+}
+#book-form input:not(input[type="submit"]) {
+  padding: 0 1rem;
+}
+h1 {
+  align-self: center;
+  font-size: 3.6rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
 }
