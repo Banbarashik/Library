@@ -57,7 +57,7 @@ input[type="number"] {
   border: var(--border-shelf-size) solid var(--border-shelf-color);
   background-color: var(--shelf-inner-color);
   column-gap: 4rem;
-  padding-bottom: 0.3rem;
+  padding-bottom: 0.1rem;
   padding-left: 2rem;
 }
 
@@ -161,8 +161,12 @@ input[type="number"] {
 }
 
 .book-card:hover {
-  background: linear-gradient(to top right, transparent 50%, red 52%) top
-    right/4.5rem 4rem no-repeat;
+  background: linear-gradient(
+      to top right,
+      transparent 50%,
+      hsl(0deg 50% 49%) 52%
+    )
+    top right/4.5rem 4rem no-repeat;
 }
 
 .book-card:hover .delete-btn {
@@ -179,10 +183,12 @@ input[type="number"] {
   border-left-width: 70px;
   color: #000;
 }
-.delete-btn::before {
+
+.delete-btn::before,
+.delete-btn::after {
   width: 5px;
   height: 18px;
-  background-color: white;
+  background-color: hsl(0deg 49% 82%);
   position: absolute;
   content: "";
   top: 2px;
@@ -192,15 +198,7 @@ input[type="number"] {
 }
 
 .delete-btn::after {
-  width: 5px;
-  height: 18px;
-  background-color: white;
-  position: absolute;
-  content: "";
-  top: 2px;
-  right: 10px;
   transform: rotate(-45deg);
-  border-radius: 10px;
 }
 
 .input-and-label {
@@ -237,4 +235,8 @@ h1 {
   font-size: 3.6rem;
   font-weight: 700;
   margin-bottom: 1rem;
+}
+
+#error-message {
+  margin-top: 0.9rem;
 }

@@ -113,6 +113,7 @@ function addBookToPage(container, book) {
     if (parseInt(e.target.value) > max) e.target.value = max;
     if (parseInt(e.target.value) === 0 || e.target.value === "")
       e.target.value = 1;
+    book.completedPages = e.target.value;
   });
 }
 
@@ -145,18 +146,23 @@ function setInputFilter(textbox, inputFilter) {
 addBookBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  if (parseInt(completedPages.value) > parseInt(totalPages.value))
-    completedPages.value = totalPages.value;
-
-  if (parseInt(completedPages.value) === 0 || completedPages.value === "")
-    completedPages.value = 1;
-
   if (title.value === "" || author.value === "" || totalPages.value === "") {
-    errMessage.textContent = "Please, fill out all required fields";
+    errMessage.textContent = "Please, fill out all required fields.";
     return false;
-  } else if (totalPages.value > totalPages.max) {
-    errMessage.textContent = "Number of pages can't be greater than 99999";
+  } else if (
+    parseInt(totalPages.value) < parseInt(totalPages.min) ||
+    parseInt(totalPages.value) > parseInt(totalPages.max)
+  ) {
+    errMessage.textContent =
+      "Number of pages can't be less than 1 and greater than 99999.";
     return false;
+  } else if (parseInt(completedPages.value) > parseInt(totalPages.value)) {
+    completedPages.value = totalPages.value;
+  } else if (
+    parseInt(completedPages.value) === 0 ||
+    completedPages.value === ""
+  ) {
+    completedPages.value = 1;
   }
 
   addBookToLibrary();
