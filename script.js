@@ -10,6 +10,13 @@ const totalPages = document.getElementById("totalPages");
 const completedPages = document.getElementById("completedPages");
 const errMessage = document.getElementById("error-message");
 
+(function () {
+  if (localStorage) {
+    myLibrary = JSON.parse(localStorage.getItem("books"));
+    myLibrary.forEach((book) => addBookToPage(cardsBlock, book));
+  }
+})();
+
 function getRandomNumber(min, max) {
   return Math.random() * (max - min) + min;
 }
@@ -35,12 +42,14 @@ function addBookToLibrary() {
   newBook.addIndex();
 
   myLibrary.push(newBook);
+  localStorage.setItem("books", JSON.stringify(myLibrary));
 
   if (cardsBlock.childElementCount === 8) {
     cardsBlock = document.createElement("section");
     cardsBlock.classList.add("cards", "cards-sequence");
     bookshelf.appendChild(cardsBlock);
   }
+
   addBookToPage(cardsBlock, newBook);
 }
 
