@@ -26,14 +26,17 @@ const errMessage = document.getElementById("error-message");
 })();
 
 function getRandomNumber(min, max) {
-  return Math.random() * (max - min) + min;
+  return Math.floor(Math.random() * (max - min) + min);
 }
 
-function Book(title, author, totalPages, completedPages) {
+function Book(title, author, totalPages, completedPages, color) {
   this.title = title;
   this.author = author;
   this.totalPages = totalPages;
   this.completedPages = completedPages;
+  this.color = `hsl(${getRandomNumber(0, 360)},
+  ${getRandomNumber(20, 100)}%,
+  ${getRandomNumber(50, 80)}%)`;
 }
 
 Book.prototype.addIndex = function () {
@@ -65,9 +68,7 @@ function addBookToPage(container, book) {
   const bookBody = document.createElement("article");
   bookBody.classList.add("book-card");
   bookBody.setAttribute("data-index", book.index);
-  bookBody.style.backgroundColor = `hsl(${getRandomNumber(0, 360)},
-  ${getRandomNumber(20, 100)}%,
-  ${getRandomNumber(50, 80)}%)`;
+  bookBody.style.backgroundColor = book.color;
 
   const bookTitle = document.createElement("h2");
   bookTitle.classList.add("title");
@@ -125,9 +126,6 @@ function addBookToPage(container, book) {
       }
     });
 
-    // booksLocal.splice(book.index, 1);
-    // localStorage.setItem("books", JSON.stringify(booksLocal));
-
     if (
       cardsBlock.childElementCount === 0 &&
       bookshelf.getElementsByClassName("cards").length !== 1
@@ -143,6 +141,14 @@ function addBookToPage(container, book) {
     if (parseInt(e.target.value) === 0 || e.target.value === "")
       e.target.value = 1;
     book.completedPages = e.target.value;
+
+    const booksLocal = JSON.parse(localStorage.getItem("books"));
+    booksLocal.forEach((bookLocal, index) => {
+      if (bookLocal.index === book.index) {
+        booksLocal[index].completedPages = book.completedPages;
+        localStorage.setItem("books", JSON.stringify(booksLocal));
+      }
+    });
   });
 }
 
