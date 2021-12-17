@@ -11,8 +11,9 @@ const completedPages = document.getElementById("completedPages");
 const errMessage = document.getElementById("error-message");
 
 (function () {
-  if (localStorage) {
-    myLibrary = JSON.parse(localStorage.getItem("books"));
+  if (localStorage.getItem("books")) {
+    const booksLocal = JSON.parse(localStorage.getItem("books"));
+    myLibrary = booksLocal;
     myLibrary.forEach((book) => addBookToPage(cardsBlock, book));
   }
 })();
@@ -106,7 +107,19 @@ function addBookToPage(container, book) {
 
   deleteBtn.addEventListener("click", () => {
     bookBody.remove();
+
     delete myLibrary[book.index];
+
+    const booksLocal = JSON.parse(localStorage.getItem("books"));
+    booksLocal.forEach((bookLocal, index) => {
+      if (bookLocal.index === book.index) {
+        booksLocal.splice(index, 1);
+        localStorage.setItem("books", JSON.stringify(booksLocal));
+      }
+    });
+
+    // booksLocal.splice(book.index, 1);
+    // localStorage.setItem("books", JSON.stringify(booksLocal));
 
     if (
       cardsBlock.childElementCount === 0 &&
