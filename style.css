@@ -5,8 +5,9 @@
   --book-height: 10rem;
   --border-shelf-color: #723f3b;
   --shelf-inner-color: #2f0e09;
-  --border-shelf-size: 50px;
+  --border-shelf-size: 5rem;
   --padding-and-col-gap: 3rem;
+  --form-width: 30rem;
 }
 
 * {
@@ -21,7 +22,7 @@ html {
 
 body {
   display: grid;
-  grid-template-columns: 1fr 30rem;
+  grid-template-columns: 1fr var(--form-width);
   font-family: "Montserrat Alternates", sans-serif;
   font-size: 1.6rem;
   background-color: #723f3b6e;
@@ -52,10 +53,6 @@ input[type="number"] {
   display: flex;
   flex-flow: column-reverse wrap;
   row-gap: 0.1rem;
-  /* width: calc(
-    var(--book-width) * 2 + (var(--border-shelf-size) * 2) +
-      (var(--padding-and-col-gap) * 2) + 4rem
-  ); */
   width: 100%;
   height: calc((var(--book-height) * 4.7) + (var(--border-shelf-size) * 2));
   padding: 3rem;
@@ -75,7 +72,7 @@ input[type="number"] {
   align-items: center;
   width: var(--book-width);
   height: var(--book-height);
-  border-radius: 10px;
+  border-radius: 1rem;
   background-color: palegoldenrod;
   padding-left: 5rem;
   padding-right: 6rem;
@@ -177,15 +174,15 @@ input[type="number"] {
 
 .delete-btn::before,
 .delete-btn::after {
-  width: 5px;
-  height: 18px;
+  width: 0.5rem;
+  height: 1.8rem;
   background-color: hsl(0deg 49% 82%);
   position: absolute;
   content: "";
-  top: 2px;
-  right: 10px;
+  top: 0.2rem;
+  right: 1rem;
   transform: rotate(45deg);
-  border-radius: 10px;
+  border-radius: 1rem;
 }
 
 .delete-btn::after {
@@ -206,7 +203,7 @@ input[type="number"] {
   right: 0;
   top: 0;
   z-index: 2;
-  width: 30rem;
+  width: var(--form-width);
   height: 100vh;
   padding: 3rem;
   background-color: hsl(7.9, 22.9%, 49%);
@@ -232,6 +229,7 @@ input[type="number"] {
   height: 3rem;
   background-color: #ebd2d2;
   color: #673027;
+  flex-shrink: 0;
 }
 #book-form input:not(input[type="submit"]) {
   padding: 0 1rem;
@@ -260,6 +258,12 @@ h1 {
 }
 
 /* MEDIA QUERIES */
+/* 1880px */
+@media (min-width: 116em) {
+  :root {
+    --book-width: 66rem;
+  }
+}
 /* 1730px */
 @media (max-width: 108em) {
   html {
@@ -268,12 +272,19 @@ h1 {
 }
 /* 1600px */
 @media (max-width: 100em) {
+  :root {
+    --book-width: 61rem;
+  }
   html {
     font-size: 53%;
   }
   #bookshelf,
   #book-form {
     font-size: 1.8rem;
+  }
+  .completed-pages,
+  #credit {
+    font-size: 1.7rem;
   }
 }
 /* 1480px */
