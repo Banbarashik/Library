@@ -27,6 +27,11 @@ body {
   background-color: #723f3b6e;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 input {
   font: inherit;
 }
@@ -89,20 +94,6 @@ input[type="number"] {
   gap: 1rem;
   margin-left: auto;
   text-align: center;
-}
-
-#book-form {
-  display: flex;
-  gap: 1.5rem;
-  flex-direction: column;
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 30rem;
-  height: 100vh;
-  padding: 3rem 3rem 0;
-  background-color: hsl(7.9, 22.9%, 49%);
-  color: hsl(0, 38.5%, 87.3%);
 }
 
 .author-and-pages {
@@ -207,6 +198,21 @@ input[type="number"] {
   gap: 0.8rem;
 }
 
+#book-form {
+  display: flex;
+  gap: 1.5rem;
+  flex-direction: column;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 2;
+  width: 30rem;
+  height: 100vh;
+  padding: 3rem;
+  background-color: hsl(7.9, 22.9%, 49%);
+  color: hsl(0, 38.5%, 87.3%);
+}
+
 #add-book {
   width: 60%;
   align-self: end;
@@ -221,7 +227,7 @@ input[type="number"] {
   opacity: 0.6;
 }
 #book-form input {
-  border-radius: 10px;
+  border-radius: 1rem;
   border: none;
   height: 3rem;
   background-color: #ebd2d2;
@@ -239,4 +245,46 @@ h1 {
 
 #error-message {
   margin-top: 0.9rem;
+}
+
+#credit {
+  margin-top: auto;
+  align-self: center;
+}
+#credit a {
+  margin-left: 5px;
+}
+#credit img {
+  width: 18px;
+  opacity: 0.7;
+}
+
+/* MEDIA QUERIES */
+/* 1730px */
+@media (max-width: 108em) {
+  html {
+    font-size: 58%;
+  }
+}
+/* 1600px */
+@media (max-width: 100em) {
+  html {
+    font-size: 53%;
+  }
+  #bookshelf,
+  #book-form {
+    font-size: 1.8rem;
+  }
+}
+/* 1480px */
+@media (max-width: 92.5em) {
+  html {
+    font-size: 48%;
+  }
+}
+/* 1350px */
+@media (max-width: 84em) {
+  html {
+    font-size: 44%;
+  }
 }
