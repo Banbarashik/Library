@@ -14,7 +14,14 @@ const errMessage = document.getElementById("error-message");
   if (localStorage.getItem("books")) {
     const booksLocal = JSON.parse(localStorage.getItem("books"));
     myLibrary = booksLocal;
-    myLibrary.forEach((book) => addBookToPage(cardsBlock, book));
+    myLibrary.forEach((book) => {
+      if (cardsBlock.childElementCount === 8) {
+        cardsBlock = document.createElement("section");
+        cardsBlock.classList.add("cards", "cards-sequence");
+        bookshelf.appendChild(cardsBlock);
+      }
+      addBookToPage(cardsBlock, book);
+    });
   }
 })();
 
