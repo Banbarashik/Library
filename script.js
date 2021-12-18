@@ -1,5 +1,6 @@
 "use strict";
 let myLibrary = [];
+let booksLocal = [];
 let cardsBlock = document.querySelector(".cards");
 const addBookBtn = document.getElementById("add-book");
 const bookshelf = document.getElementById("bookshelf");
@@ -12,9 +13,8 @@ const errMessage = document.getElementById("error-message");
 
 (function () {
   if (localStorage.getItem("books")) {
-    const booksLocal = JSON.parse(localStorage.getItem("books"));
-    myLibrary = booksLocal;
-    myLibrary.forEach((book) => {
+    booksLocal = JSON.parse(localStorage.getItem("books"));
+    booksLocal.forEach((book) => {
       if (cardsBlock.childElementCount === 8) {
         cardsBlock = document.createElement("section");
         cardsBlock.classList.add("cards", "cards-sequence");
@@ -29,7 +29,7 @@ function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-function Book(title, author, totalPages, completedPages, color) {
+function Book(title, author, totalPages, completedPages) {
   this.title = title;
   this.author = author;
   this.totalPages = totalPages;
@@ -53,7 +53,8 @@ function addBookToLibrary() {
   newBook.addIndex();
 
   myLibrary.push(newBook);
-  localStorage.setItem("books", JSON.stringify(myLibrary));
+  booksLocal.push(newBook);
+  localStorage.setItem("books", JSON.stringify(booksLocal));
 
   if (cardsBlock.childElementCount === 8) {
     cardsBlock = document.createElement("section");
@@ -118,7 +119,7 @@ function addBookToPage(container, book) {
 
     delete myLibrary[book.index];
 
-    const booksLocal = JSON.parse(localStorage.getItem("books"));
+    // const booksLocal = JSON.parse(localStorage.getItem("books"));
     booksLocal.forEach((bookLocal, index) => {
       if (bookLocal.index === book.index) {
         booksLocal.splice(index, 1);
@@ -142,13 +143,7 @@ function addBookToPage(container, book) {
       e.target.value = 1;
     book.completedPages = e.target.value;
 
-    const booksLocal = JSON.parse(localStorage.getItem("books"));
-    booksLocal.forEach((bookLocal, index) => {
-      if (bookLocal.index === book.index) {
-        booksLocal[index].completedPages = book.completedPages;
-        localStorage.setItem("books", JSON.stringify(booksLocal));
-      }
-    });
+    localStorage.setItem("books", JSON.stringify(booksLocal));
   });
 }
 
