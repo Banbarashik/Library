@@ -22,6 +22,7 @@ const errMessage = document.getElementById("error-message");
       }
       addBookToPage(cardsBlock, book);
     });
+    myLibrary = booksLocal.slice();
   }
 })();
 
@@ -134,6 +135,19 @@ function addBookToPage(container, book) {
       cardsBlock.remove();
       cardsBlock = bookshelf.lastElementChild;
     }
+
+    // if (cardsBlock.previousElementSibling.childElementCount < 8) {
+    //   cardsBlock.previousElementSibling.appendChild(cardsBlock.lastChild);
+    // }
+    // if (cardsBlock.previousElementSibling.childElementCount < 8) {
+    //   cardsBlock.previousElementSibling.appendChild(cardsBlock.lastChild);
+    // }
+    const allBlocks = document.querySelectorAll(".cards");
+    allBlocks.forEach((block, index) => {
+      if (index && block.previousElementSibling.childElementCount < 8) {
+        block.previousElementSibling.appendChild(block.firstChild);
+      }
+    });
   });
 
   bookCompletedPages.addEventListener("blur", (e) => {
