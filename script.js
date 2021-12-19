@@ -140,16 +140,18 @@ function addBookToPage(container, book, index) {
   container.appendChild(bookBody);
 
   deleteBtn.addEventListener('click', () => {
+    cardsBlock = bookBody.parentElement; // test
+
     bookBody.remove();
 
-    delete myLibrary[book.index];
+    delete myLibrary[index];
 
-    booksLocal.forEach((bookLocal, index) => {
-      if (bookLocal.index === book.index) {
-        booksLocal.splice(index, 1);
-        localStorage.setItem('books', JSON.stringify(booksLocal));
-      }
-    });
+    // booksLocal.forEach((bookLocal, index) => {
+    //   if (bookLocal.index === book.index) {
+    //     booksLocal.splice(index, 1);
+    //     localStorage.setItem('books', JSON.stringify(booksLocal));
+    //   }
+    // });
 
     if (
       cardsBlock.childElementCount === 0 &&
