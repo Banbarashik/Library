@@ -65,6 +65,7 @@ function addBookToLibrary() {
   // }
 
   const cardsContainers = document.querySelectorAll('.cards');
+
   cardsContainers.forEach((container, index) => {
     container.replaceChildren();
     if (index) {
@@ -72,9 +73,8 @@ function addBookToLibrary() {
     }
   });
 
-  // addBookToPage(cardsBlock, newBook);
-  // cardBlocks.forEach(block => {
-  // block.replaceChildren();
+  cardsBlock = document.querySelector('.cards');
+
   myLibrary.forEach((book, index) => {
     if (cardsBlock.childElementCount === 8) {
       cardsBlock = document.createElement('section');
@@ -84,15 +84,13 @@ function addBookToLibrary() {
 
     addBookToPage(cardsBlock, book, index);
   });
+
   cardsBlock = document.querySelector('.cards');
-  // });
-  // cardsBlock.replaceChildren();
 }
 
 function addBookToPage(container, book, index) {
   const bookBody = document.createElement('article');
   bookBody.classList.add('book-card');
-  // bookBody.setAttribute("data-index", book.index);
   bookBody.setAttribute('data-index', index);
   bookBody.style.backgroundColor = book.color;
 
@@ -125,10 +123,6 @@ function addBookToPage(container, book, index) {
 
   completedPagesBlock.appendChild(bookCompletedPages);
 
-  // setInputFilter(bookCompletedPages, function (value) {
-  //   return /^\d*?\d*$/.test(value); // Allow digits and '.' only, using a RegExp
-  // });
-
   const deleteBtn = document.createElement('button');
   deleteBtn.classList.add('delete-btn');
 
@@ -142,9 +136,10 @@ function addBookToPage(container, book, index) {
   deleteBtn.addEventListener('click', () => {
     cardsBlock = bookBody.parentElement; // test
 
-    bookBody.remove();
+    // bookBody.remove();
 
-    delete myLibrary[index];
+    // delete myLibrary[index];
+    myLibrary.splice(index, 1);
 
     // booksLocal.forEach((bookLocal, index) => {
     //   if (bookLocal.index === book.index) {
@@ -153,13 +148,26 @@ function addBookToPage(container, book, index) {
     //   }
     // });
 
-    if (
-      cardsBlock.childElementCount === 0 &&
-      bookshelf.getElementsByClassName('cards').length !== 1
-    ) {
-      cardsBlock.remove();
-      cardsBlock = bookshelf.lastElementChild;
-    }
+    const cardsContainers = document.querySelectorAll('.cards');
+
+    cardsContainers.forEach((container, index) => {
+      container.replaceChildren();
+      if (index) {
+        container.remove();
+      }
+    });
+
+    cardsBlock = document.querySelector('.cards');
+
+    myLibrary.forEach((book, index) => {
+      if (cardsBlock.childElementCount === 8) {
+        cardsBlock = document.createElement('section');
+        cardsBlock.classList.add('cards', 'cards-sequence');
+        bookshelf.appendChild(cardsBlock);
+      }
+
+      addBookToPage(cardsBlock, book, index);
+    });
 
     const allBlocks = document.querySelectorAll('.cards');
     allBlocks.forEach((block, index) => {
@@ -167,6 +175,14 @@ function addBookToPage(container, book, index) {
         block.previousElementSibling.appendChild(block.firstChild);
       }
     });
+
+    if (
+      bookshelf.lastElementChild.childElementCount === 0 &&
+      bookshelf.getElementsByClassName('cards').length !== 1
+    ) {
+      bookshelf.lastElementChild.remove();
+      // cardsBlock = bookshelf.lastElementChild;
+    }
   });
 
   bookCompletedPages.addEventListener('blur', e => {
