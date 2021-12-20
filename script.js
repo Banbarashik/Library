@@ -1,7 +1,6 @@
 'use strict';
 let myLibrary = [];
 let booksLocal = [];
-// let cardsBlock = document.querySelector('.cards');
 let cardsBlock = document.querySelector('.cards');
 const addBookBtn = document.getElementById('add-book');
 const bookshelf = document.getElementById('bookshelf');
@@ -41,10 +40,6 @@ function Book(title, author, totalPages, completedPages) {
   ${getRandomNumber(50, 80)}%)`;
 }
 
-// Book.prototype.addIndex = function () {
-//   this.index = myLibrary.length;
-// };
-
 function addBookToLibrary() {
   const title = document.getElementById('title').value;
   const author = document.getElementById('author').value;
@@ -52,7 +47,6 @@ function addBookToLibrary() {
   const completedPages = document.getElementById('completedPages').value;
 
   const newBook = new Book(title, author, totalPages, completedPages);
-  // newBook.addIndex();
 
   myLibrary.push(newBook);
   // booksLocal.push(newBook);
@@ -68,15 +62,31 @@ function addBookToLibrary() {
 
   cardsContainers.forEach((container, index) => {
     container.replaceChildren();
-    if (index) {
+    if (index > 1) {
       container.remove();
     }
   });
 
-  cardsBlock = document.querySelector('.cards');
+  cardsBlock = document.getElementById('first-card');
 
+  // myLibrary.forEach((book, index) => {
+  //   if (cardsBlock.childElementCount === 8) {
+  //     cardsBlock = document.createElement('section');
+  //     cardsBlock.classList.add('cards', 'cards-sequence');
+  //     bookshelf.appendChild(cardsBlock);
+  //   }
+
+  // TEST-CHANGES:
   myLibrary.forEach((book, index) => {
-    if (cardsBlock.childElementCount === 8) {
+    // if index of cur cardBlock is 1 or greater
+    // or length of bookshelf is 2 or greater
+
+    if (
+      cardsBlock === document.getElementById('first-card') &&
+      cardsBlock.childElementCount === 8
+    ) {
+      cardsBlock = document.getElementById('second-card');
+    } else if (cardsBlock.childElementCount === 8) {
       cardsBlock = document.createElement('section');
       cardsBlock.classList.add('cards', 'cards-sequence');
       bookshelf.appendChild(cardsBlock);
@@ -85,7 +95,7 @@ function addBookToLibrary() {
     addBookToPage(cardsBlock, book, index);
   });
 
-  cardsBlock = document.querySelector('.cards');
+  cardsBlock = document.getElementById('first-card');
 }
 
 function addBookToPage(container, book, index) {
@@ -134,11 +144,8 @@ function addBookToPage(container, book, index) {
   container.appendChild(bookBody);
 
   deleteBtn.addEventListener('click', () => {
-    cardsBlock = bookBody.parentElement; // test
+    cardsBlock = bookBody.parentElement;
 
-    // bookBody.remove();
-
-    // delete myLibrary[index];
     myLibrary.splice(index, 1);
 
     // booksLocal.forEach((bookLocal, index) => {
@@ -152,15 +159,20 @@ function addBookToPage(container, book, index) {
 
     cardsContainers.forEach((container, index) => {
       container.replaceChildren();
-      if (index) {
+      if (index > 1) {
         container.remove();
       }
     });
 
-    cardsBlock = document.querySelector('.cards');
+    cardsBlock = document.getElementById('first-card');
 
     myLibrary.forEach((book, index) => {
-      if (cardsBlock.childElementCount === 8) {
+      if (
+        cardsBlock === document.getElementById('first-card') &&
+        cardsBlock.childElementCount === 8
+      ) {
+        cardsBlock = document.getElementById('second-card');
+      } else if (cardsBlock.childElementCount === 8) {
         cardsBlock = document.createElement('section');
         cardsBlock.classList.add('cards', 'cards-sequence');
         bookshelf.appendChild(cardsBlock);
@@ -178,10 +190,9 @@ function addBookToPage(container, book, index) {
 
     if (
       bookshelf.lastElementChild.childElementCount === 0 &&
-      bookshelf.getElementsByClassName('cards').length !== 1
+      bookshelf.getElementsByClassName('cards').length > 2
     ) {
       bookshelf.lastElementChild.remove();
-      // cardsBlock = bookshelf.lastElementChild;
     }
   });
 
