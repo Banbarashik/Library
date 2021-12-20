@@ -9,25 +9,21 @@ const completedPages = document.getElementById('completedPages');
 const errMessage = document.getElementById('error-message');
 
 // variables related to the library
-const myLibrary = [];
+let myLibrary = [];
 let currentShelf;
 let allShelves;
 const bookshelf = document.getElementById('bookshelf');
 
-// (function () {
-//   if (localStorage.getItem('books')) {
-//     booksLocal = JSON.parse(localStorage.getItem('books'));
-//     booksLocal.forEach(book => {
-//       if (currentShelf.childElementCount === 8) {
-//         currentShelf = document.createElement('section');
-//         currentShelf.classList.add('cards', 'cards-sequence');
-//         bookshelf.appendChild(currentShelf);
-//       }
-//       addBookToPage(currentShelf, book);
-//     });
-//     myLibrary = booksLocal.slice();
-//   }
-// })();
+// store the library array in localStorage before unloading
+window.addEventListener('beforeunload', () =>
+  localStorage.setItem('books', JSON.stringify(myLibrary))
+);
+
+// check if the library is saved in localStorage, then add all books contained inside it
+if (localStorage.getItem('books')) {
+  myLibrary = JSON.parse(localStorage.getItem('books'));
+  goThroughLibrary();
+}
 
 function setInputFilter(textbox, inputFilter) {
   [
