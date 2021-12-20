@@ -1,7 +1,8 @@
 'use strict';
-let myLibrary = [];
+const myLibrary = [];
 let booksLocal = [];
-let cardsBlock = document.querySelector('.cards');
+let cardsBlock;
+let cardsContainers;
 const addBookBtn = document.getElementById('add-book');
 const bookshelf = document.getElementById('bookshelf');
 const bookForm = document.getElementById('book-form');
@@ -11,20 +12,20 @@ const totalPages = document.getElementById('totalPages');
 const completedPages = document.getElementById('completedPages');
 const errMessage = document.getElementById('error-message');
 
-(function () {
-  if (localStorage.getItem('books')) {
-    booksLocal = JSON.parse(localStorage.getItem('books'));
-    booksLocal.forEach(book => {
-      if (cardsBlock.childElementCount === 8) {
-        cardsBlock = document.createElement('section');
-        cardsBlock.classList.add('cards', 'cards-sequence');
-        bookshelf.appendChild(cardsBlock);
-      }
-      addBookToPage(cardsBlock, book);
-    });
-    myLibrary = booksLocal.slice();
-  }
-})();
+// (function () {
+//   if (localStorage.getItem('books')) {
+//     booksLocal = JSON.parse(localStorage.getItem('books'));
+//     booksLocal.forEach(book => {
+//       if (cardsBlock.childElementCount === 8) {
+//         cardsBlock = document.createElement('section');
+//         cardsBlock.classList.add('cards', 'cards-sequence');
+//         bookshelf.appendChild(cardsBlock);
+//       }
+//       addBookToPage(cardsBlock, book);
+//     });
+//     myLibrary = booksLocal.slice();
+//   }
+// })();
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -38,6 +39,23 @@ function Book(title, author, totalPages, completedPages) {
   this.color = `hsl(${getRandomNumber(0, 360)},
   ${getRandomNumber(20, 100)}%,
   ${getRandomNumber(50, 80)}%)`;
+}
+
+function goThroughLibrary() {
+  myLibrary.forEach((book, index) => {
+    if (
+      cardsBlock === document.getElementById('first-card') &&
+      cardsBlock.childElementCount === 8
+    ) {
+      cardsBlock = document.getElementById('second-card');
+    } else if (cardsBlock.childElementCount === 8) {
+      cardsBlock = document.createElement('section');
+      cardsBlock.classList.add('cards', 'cards-sequence');
+      bookshelf.appendChild(cardsBlock);
+    }
+
+    addBookToPage(cardsBlock, book, index);
+  });
 }
 
 function addBookToLibrary() {
@@ -58,7 +76,7 @@ function addBookToLibrary() {
   //   bookshelf.appendChild(cardsBlock);
   // }
 
-  const cardsContainers = document.querySelectorAll('.cards');
+  cardsContainers = document.querySelectorAll('.cards');
 
   cardsContainers.forEach((container, index) => {
     container.replaceChildren();
@@ -69,31 +87,8 @@ function addBookToLibrary() {
 
   cardsBlock = document.getElementById('first-card');
 
-  // myLibrary.forEach((book, index) => {
-  //   if (cardsBlock.childElementCount === 8) {
-  //     cardsBlock = document.createElement('section');
-  //     cardsBlock.classList.add('cards', 'cards-sequence');
-  //     bookshelf.appendChild(cardsBlock);
-  //   }
-
-  // TEST-CHANGES:
-  myLibrary.forEach((book, index) => {
-    // if index of cur cardBlock is 1 or greater
-    // or length of bookshelf is 2 or greater
-
-    if (
-      cardsBlock === document.getElementById('first-card') &&
-      cardsBlock.childElementCount === 8
-    ) {
-      cardsBlock = document.getElementById('second-card');
-    } else if (cardsBlock.childElementCount === 8) {
-      cardsBlock = document.createElement('section');
-      cardsBlock.classList.add('cards', 'cards-sequence');
-      bookshelf.appendChild(cardsBlock);
-    }
-
-    addBookToPage(cardsBlock, book, index);
-  });
+  // FIXME: HERE SHOULD BE FUNCTION THAT GOES THROUGH MYLIBRARY ARRAY
+  goThroughLibrary();
 
   cardsBlock = document.getElementById('first-card');
 }
@@ -155,7 +150,7 @@ function addBookToPage(container, book, index) {
     //   }
     // });
 
-    const cardsContainers = document.querySelectorAll('.cards');
+    cardsContainers = document.querySelectorAll('.cards');
 
     cardsContainers.forEach((container, index) => {
       container.replaceChildren();
@@ -166,24 +161,15 @@ function addBookToPage(container, book, index) {
 
     cardsBlock = document.getElementById('first-card');
 
-    myLibrary.forEach((book, index) => {
+    goThroughLibrary();
+
+    // const allBlocks = document.querySelectorAll('.cards');
+    cardsContainers.forEach((block, index) => {
       if (
-        cardsBlock === document.getElementById('first-card') &&
-        cardsBlock.childElementCount === 8
+        index &&
+        block.previousElementSibling.childElementCount < 8 &&
+        block.childElementCount > 0
       ) {
-        cardsBlock = document.getElementById('second-card');
-      } else if (cardsBlock.childElementCount === 8) {
-        cardsBlock = document.createElement('section');
-        cardsBlock.classList.add('cards', 'cards-sequence');
-        bookshelf.appendChild(cardsBlock);
-      }
-
-      addBookToPage(cardsBlock, book, index);
-    });
-
-    const allBlocks = document.querySelectorAll('.cards');
-    allBlocks.forEach((block, index) => {
-      if (index && block.previousElementSibling.childElementCount < 8) {
         block.previousElementSibling.appendChild(block.firstChild);
       }
     });
