@@ -1,36 +1,113 @@
 'use strict';
-const myLibrary = [];
-let booksLocal = [];
-let cardsBlock;
-let cardsContainers;
-const addBookBtn = document.getElementById('add-book');
-const bookshelf = document.getElementById('bookshelf');
+// variables related to the form
 const bookForm = document.getElementById('book-form');
+const addBookBtn = document.getElementById('add-book');
 const title = document.getElementById('title');
 const author = document.getElementById('author');
 const totalPages = document.getElementById('totalPages');
 const completedPages = document.getElementById('completedPages');
 const errMessage = document.getElementById('error-message');
 
+// variables related to the library
+const myLibrary = [];
+let currentShelf;
+let allShelves;
+const bookshelf = document.getElementById('bookshelf');
+
 // (function () {
 //   if (localStorage.getItem('books')) {
 //     booksLocal = JSON.parse(localStorage.getItem('books'));
 //     booksLocal.forEach(book => {
-//       if (cardsBlock.childElementCount === 8) {
-//         cardsBlock = document.createElement('section');
-//         cardsBlock.classList.add('cards', 'cards-sequence');
-//         bookshelf.appendChild(cardsBlock);
+//       if (currentShelf.childElementCount === 8) {
+//         currentShelf = document.createElement('section');
+//         currentShelf.classList.add('cards', 'cards-sequence');
+//         bookshelf.appendChild(currentShelf);
 //       }
-//       addBookToPage(cardsBlock, book);
+//       addBookToPage(currentShelf, book);
 //     });
 //     myLibrary = booksLocal.slice();
 //   }
 // })();
 
+function setInputFilter(textbox, inputFilter) {
+  [
+    'input',
+    'keydown',
+    'keyup',
+    'mousedown',
+    'mouseup',
+    'select',
+    'contextmenu',
+    'drop',
+  ].forEach(function (event) {
+    textbox.addEventListener(event, function () {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty('oldValue')) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      } else {
+        this.value = '';
+      }
+    });
+  });
+}
+
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+function setCurrentShelfToFirst() {
+  currentShelf = document.getElementById('first-shelf');
+}
+
+function updateCardsNodeList() {
+  allShelves = document.querySelectorAll('.cards');
+}
+
+function clearFields() {
+  errMessage.textContent = '';
+  title.value = '';
+  author.value = '';
+  totalPages.value = '';
+  completedPages.value = '';
+}
+
+function clearBookshelf() {
+  allShelves.forEach((container, index) => {
+    container.replaceChildren();
+    if (index > 1) {
+      container.remove();
+    }
+  });
+}
+
+// move the first book to the previous shelf if it's not full
+function moveBookToPrevShelf() {
+  allShelves.forEach((block, index) => {
+    if (
+      index &&
+      block.previousElementSibling.childElementCount < 8 &&
+      block.childElementCount > 0
+    ) {
+      block.previousElementSibling.appendChild(block.firstChild);
+    }
+  });
+}
+
+// remove the last shelf if there's no books
+function removeLastShelf() {
+  if (
+    bookshelf.lastElementChild.childElementCount === 0 &&
+    bookshelf.getElementsByClassName('cards').length > 2
+  ) {
+    bookshelf.lastElementChild.remove();
+  }
+}
+
+// creates a book object
 function Book(title, author, totalPages, completedPages) {
   this.title = title;
   this.author = author;
@@ -41,23 +118,7 @@ function Book(title, author, totalPages, completedPages) {
   ${getRandomNumber(50, 80)}%)`;
 }
 
-function goThroughLibrary() {
-  myLibrary.forEach((book, index) => {
-    if (
-      cardsBlock === document.getElementById('first-card') &&
-      cardsBlock.childElementCount === 8
-    ) {
-      cardsBlock = document.getElementById('second-card');
-    } else if (cardsBlock.childElementCount === 8) {
-      cardsBlock = document.createElement('section');
-      cardsBlock.classList.add('cards', 'cards-sequence');
-      bookshelf.appendChild(cardsBlock);
-    }
-
-    addBookToPage(cardsBlock, book, index);
-  });
-}
-
+// push a book object to the library array, clears the bookshelf and rearrange it with the new object
 function addBookToLibrary() {
   const title = document.getElementById('title').value;
   const author = document.getElementById('author').value;
@@ -67,32 +128,15 @@ function addBookToLibrary() {
   const newBook = new Book(title, author, totalPages, completedPages);
 
   myLibrary.push(newBook);
-  // booksLocal.push(newBook);
-  // localStorage.setItem('books', JSON.stringify(booksLocal));
 
-  // if (cardsBlock.childElementCount === 8) {
-  //   cardsBlock = document.createElement('section');
-  //   cardsBlock.classList.add('cards', 'cards-sequence');
-  //   bookshelf.appendChild(cardsBlock);
-  // }
+  updateCardsNodeList();
 
-  cardsContainers = document.querySelectorAll('.cards');
+  clearBookshelf();
 
-  cardsContainers.forEach((container, index) => {
-    container.replaceChildren();
-    if (index > 1) {
-      container.remove();
-    }
-  });
-
-  cardsBlock = document.getElementById('first-card');
-
-  // FIXME: HERE SHOULD BE FUNCTION THAT GOES THROUGH MYLIBRARY ARRAY
   goThroughLibrary();
-
-  cardsBlock = document.getElementById('first-card');
 }
 
+// creates a book element with info from the object
 function addBookToPage(container, book, index) {
   const bookBody = document.createElement('article');
   bookBody.classList.add('book-card');
@@ -139,47 +183,19 @@ function addBookToPage(container, book, index) {
   container.appendChild(bookBody);
 
   deleteBtn.addEventListener('click', () => {
-    cardsBlock = bookBody.parentElement;
+    currentShelf = bookBody.parentElement;
 
     myLibrary.splice(index, 1);
 
-    // booksLocal.forEach((bookLocal, index) => {
-    //   if (bookLocal.index === book.index) {
-    //     booksLocal.splice(index, 1);
-    //     localStorage.setItem('books', JSON.stringify(booksLocal));
-    //   }
-    // });
+    updateCardsNodeList();
 
-    cardsContainers = document.querySelectorAll('.cards');
-
-    cardsContainers.forEach((container, index) => {
-      container.replaceChildren();
-      if (index > 1) {
-        container.remove();
-      }
-    });
-
-    cardsBlock = document.getElementById('first-card');
+    clearBookshelf();
 
     goThroughLibrary();
 
-    // const allBlocks = document.querySelectorAll('.cards');
-    cardsContainers.forEach((block, index) => {
-      if (
-        index &&
-        block.previousElementSibling.childElementCount < 8 &&
-        block.childElementCount > 0
-      ) {
-        block.previousElementSibling.appendChild(block.firstChild);
-      }
-    });
+    moveBookToPrevShelf();
 
-    if (
-      bookshelf.lastElementChild.childElementCount === 0 &&
-      bookshelf.getElementsByClassName('cards').length > 2
-    ) {
-      bookshelf.lastElementChild.remove();
-    }
+    removeLastShelf();
   });
 
   bookCompletedPages.addEventListener('blur', e => {
@@ -189,7 +205,7 @@ function addBookToPage(container, book, index) {
       e.target.value = 1;
     book.completedPages = e.target.value;
 
-    localStorage.setItem('books', JSON.stringify(booksLocal));
+    // localStorage.setItem('books', JSON.stringify(booksLocal));
   });
 
   setInputFilter(bookCompletedPages, function (value) {
@@ -197,35 +213,31 @@ function addBookToPage(container, book, index) {
   });
 }
 
-function setInputFilter(textbox, inputFilter) {
-  [
-    'input',
-    'keydown',
-    'keyup',
-    'mousedown',
-    'mouseup',
-    'select',
-    'contextmenu',
-    'drop',
-  ].forEach(function (event) {
-    textbox.addEventListener(event, function () {
-      if (inputFilter(this.value)) {
-        this.oldValue = this.value;
-        this.oldSelectionStart = this.selectionStart;
-        this.oldSelectionEnd = this.selectionEnd;
-      } else if (this.hasOwnProperty('oldValue')) {
-        this.value = this.oldValue;
-        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-      } else {
-        this.value = '';
-      }
-    });
+function goThroughLibrary() {
+  setCurrentShelfToFirst();
+
+  myLibrary.forEach((book, index) => {
+    if (
+      currentShelf === document.getElementById('first-shelf') &&
+      currentShelf.childElementCount === 8
+    ) {
+      currentShelf = document.getElementById('second-shelf');
+    } else if (currentShelf.childElementCount === 8) {
+      currentShelf = document.createElement('section');
+      currentShelf.classList.add('cards', 'cards-sequence');
+      bookshelf.appendChild(currentShelf);
+    }
+
+    addBookToPage(currentShelf, book, index);
   });
+
+  setCurrentShelfToFirst();
 }
 
 addBookBtn.addEventListener('click', e => {
-  e.preventDefault();
+  e.preventDefault(); // prevent a form from being submitted
 
+  // check if fields are filled and valid
   if (title.value === '' || author.value === '' || totalPages.value === '') {
     errMessage.textContent = 'Please, fill out all required fields.';
     return false;
@@ -247,10 +259,5 @@ addBookBtn.addEventListener('click', e => {
 
   addBookToLibrary();
 
-  errMessage.textContent = '';
-
-  title.value = '';
-  author.value = '';
-  totalPages.value = '';
-  completedPages.value = '';
+  clearFields();
 });
