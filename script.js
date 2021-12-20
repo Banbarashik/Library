@@ -237,6 +237,13 @@ addBookBtn.addEventListener('click', e => {
   if (title.value === '' || author.value === '' || totalPages.value === '') {
     errMessage.textContent = 'Please, fill out all required fields.';
     return false;
+  } else if (title.value.length >= 50) {
+    errMessage.textContent = 'Title length must be less than 50 characters';
+    return false;
+  } else if (author.value.length >= 40) {
+    errMessage.textContent =
+      'Author name length must be less than 40 characters';
+    return false;
   } else if (
     parseInt(totalPages.value) < parseInt(totalPages.min) ||
     parseInt(totalPages.value) > parseInt(totalPages.max)
